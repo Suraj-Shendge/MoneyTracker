@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class CategoryRow extends StatelessWidget {
   const CategoryRow({super.key});
@@ -13,27 +12,27 @@ class CategoryRow extends StatelessWidget {
         children: const [
           CategoryItem(
             color: Color(0xFF2ECC71),
-            icon: Icons.local_gas_station,
+            imagePath: "assets/icons/fuel.png",
             label: "Fuel",
           ),
           CategoryItem(
             color: Color(0xFF9B59B6),
-            icon: Icons.fastfood,
+            imagePath: "assets/icons/food.png",
             label: "Food",
           ),
           CategoryItem(
             color: Color(0xFF3498DB),
-            icon: Icons.shopping_cart,
+            imagePath: "assets/icons/shopping.png",
             label: "Shopping",
           ),
           CategoryItem(
             color: Color(0xFF8D6E63),
-            icon: Icons.receipt_long,
+            imagePath: "assets/icons/bills.png",
             label: "Bills",
           ),
           CategoryItem(
             color: Color(0xFFE91E63),
-            icon: Icons.more_horiz,
+            imagePath: "assets/icons/other.png",
             label: "Other",
           ),
         ],
@@ -44,13 +43,13 @@ class CategoryRow extends StatelessWidget {
 
 class CategoryItem extends StatelessWidget {
   final Color color;
-  final IconData icon;
+  final String imagePath;
   final String label;
 
   const CategoryItem({
     super.key,
     required this.color,
-    required this.icon,
+    required this.imagePath,
     required this.label,
   });
 
@@ -72,10 +71,12 @@ class CategoryItem extends StatelessWidget {
               )
             ],
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 28,
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.contain,
+            ),
           ),
         ),
         const SizedBox(height: 8),
