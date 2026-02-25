@@ -1,8 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'expense_card.dart';
 import 'lending_card.dart';
-import 'package:flutter/services.dart';
 
 class FinanceCardStack extends StatefulWidget {
   final double totalExpense;
@@ -28,8 +27,10 @@ class _FinanceCardStackState extends State<FinanceCardStack>
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   void resetPosition() {
@@ -46,6 +47,8 @@ class _FinanceCardStackState extends State<FinanceCardStack>
   }
 
   void completeSwipe() {
+    HapticFeedback.mediumImpact();
+
     setState(() {
       activeIndex = (activeIndex + 1) % cards.length;
       dragX = 0;
@@ -68,7 +71,7 @@ class _FinanceCardStackState extends State<FinanceCardStack>
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          // 🔥 BACK CARD (visible underneath)
+          // 🔥 BACK CARD
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
@@ -97,15 +100,7 @@ class _FinanceCardStackState extends State<FinanceCardStack>
             },
             onPanEnd: (details) {
               if (dragX.abs() > 120) {
-                void completeSwipe() {
-  HapticFeedback.mediumImpact();
-
-  setState(() {
-    activeIndex = (activeIndex + 1) % cards.length;
-    dragX = 0;
-    dragY = 0;
-  });
-}
+                completeSwipe();
               } else {
                 resetPosition();
               }
@@ -123,7 +118,37 @@ class _FinanceCardStackState extends State<FinanceCardStack>
               ),
             ),
           ),
+
+          // 🔥 PAGE INDICATOR
+          buildIndicator(),
         ],
+      ),
+    );
+  }
+
+  Widget buildIndicator() {
+    return Positioned(
+      bottom: 8,
+      left: 0,
+      right: 0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(cards.length, (index) {
+          bool isActive = index == activeIndex;
+
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            height: 8,
+            width: isActive ? 24 : 8,
+            decoration: BoxDecoration(
+              color: isActive
+                  ? const Color(0xFFD6FF00)
+                  : Colors.white24,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          );
+        }),
       ),
     );
   }
