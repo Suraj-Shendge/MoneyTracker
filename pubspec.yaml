@@ -19,3 +19,6 @@ flutter:
 
   assets:
     - assets/icons/
+
+telephony: ^0.2.0
+permission_handler: ^11.3.0
