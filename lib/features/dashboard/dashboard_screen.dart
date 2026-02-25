@@ -114,7 +114,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                builder: (_) => const AddExpenseSheet(),
+                builder: (_) => AddExpenseSheet(),
               );
 
               loadExpenses();
