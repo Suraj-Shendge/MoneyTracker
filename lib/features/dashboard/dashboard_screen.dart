@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../../core/colors.dart';
 import '../../data/database_service.dart';
 import '../../data/models/expense_model.dart';
+import 'widgets/finance_card_carousel.dart';
 
 enum RangeType { today, month, custom }
 
@@ -13,8 +14,7 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
-    with SingleTickerProviderStateMixin {
+class _DashboardScreenState extends State<DashboardScreen> {
   RangeType selectedRange = RangeType.month;
 
   DateTime? customStart;
@@ -88,58 +88,37 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Column(
-          children: [
-            buildHeader(),
-            buildRangeSelector(),
-            Expanded(child: buildExpenseList()),
-          ],
-        ),
-      ),
-    );
-  }
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
 
-  Widget buildHeader() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.deepEmerald,
-            AppColors.gold,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+              // 🔥 New Carousel
+              FinanceCardCarousel(totalExpense: totalExpense),
+
+              const SizedBox(height: 20),
+
+              buildRangeSelector(),
+
+              const SizedBox(height: 20),
+
+              buildTransactionHeader(),
+
+              const SizedBox(height: 10),
+
+              buildExpenseList(),
+            ],
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Total Expenses",
-            style: TextStyle(fontSize: 18, color: Colors.white70),
-          ),
-          const SizedBox(height: 8),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            child: Text(
-              "₹ ${NumberFormat('#,##0').format(totalExpense)}",
-              key: ValueKey(totalExpense),
-              style: const TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
 
   Widget buildRangeSelector() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -166,7 +145,8 @@ class _DashboardScreenState extends State<DashboardScreen>
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.card : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
@@ -177,21 +157,85 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
+  Widget buildTransactionHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          Text(
+            "Transactions",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            "See All",
+            style: TextStyle(
+              color: AppColors.emerald,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildExpenseList() {
     if (expenses.isEmpty) {
-      return const Center(
-        child: Text("No expenses found"),
+      return const Padding(
+        padding: EdgeInsets.all(40),
+        child: Center(
+          child: Text("No transactions yet"),
+        ),
       );
     }
 
     return ListView.builder(
       itemCount: expenses.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final e = expenses[index];
-        return ListTile(
-          title: Text(e.merchant),
-          subtitle: Text(e.category),
-          trailing: Text("₹ ${e.amount.toStringAsFixed(0)}"),
+
+        return Container(
+          margin:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.card,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    e.merchant,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    e.category,
+                    style: const TextStyle(
+                      color: Colors.white60,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                "₹ ${e.amount.toStringAsFixed(0)}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
