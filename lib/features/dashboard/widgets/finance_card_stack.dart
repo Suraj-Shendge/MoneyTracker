@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'expense_card.dart';
 import 'lending_card.dart';
+import 'package:flutter/services.dart';
 
 class FinanceCardStack extends StatefulWidget {
   final double totalExpense;
@@ -96,7 +97,15 @@ class _FinanceCardStackState extends State<FinanceCardStack>
             },
             onPanEnd: (details) {
               if (dragX.abs() > 120) {
-                completeSwipe();
+                void completeSwipe() {
+  HapticFeedback.mediumImpact();
+
+  setState(() {
+    activeIndex = (activeIndex + 1) % cards.length;
+    dragX = 0;
+    dragY = 0;
+  });
+}
               } else {
                 resetPosition();
               }
