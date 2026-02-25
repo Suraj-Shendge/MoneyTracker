@@ -8,9 +8,10 @@ workflows:
 
     scripts:
       - flutter create expensinfo_full
+      - zip -r full_project.zip expensinfo_full
 
     artifacts:
-      - expensinfo_full/**
+      - full_project.zip
 
   android-release:
     name: Android Release Build
