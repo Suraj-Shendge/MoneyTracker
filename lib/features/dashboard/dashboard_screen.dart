@@ -259,48 +259,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
       itemBuilder: (context, index) {
         final e = expenses[index];
 
-        return Container(
-          margin:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.card,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    e.merchant,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    e.category,
-                    style: const TextStyle(
-                      color: Colors.white60,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+return Container(
+  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  padding: const EdgeInsets.all(16),
+  decoration: BoxDecoration(
+    color: AppColors.card,
+    borderRadius: BorderRadius.circular(24),
+  ),
+  child: Row(
+    children: [
+      // Category Icon Circle
+      Container(
+        height: 48,
+        width: 48,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xFFD6FF00),
+        ),
+        child: const Icon(
+          Icons.receipt,
+          color: Colors.black,
+        ),
+      ),
+
+      const SizedBox(width: 16),
+
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              e.merchant,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
-              Text(
-                "₹ ${e.amount.toStringAsFixed(0)}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              e.category,
+              style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 12,
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
+            ),
+          ],
+        ),
+      ),
+
+      Text(
+        "₹ ${e.amount.toStringAsFixed(0)}",
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    ],
+  ),
+);
