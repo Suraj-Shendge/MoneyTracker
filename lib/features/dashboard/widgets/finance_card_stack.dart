@@ -32,11 +32,6 @@ class _FinanceCardStackState extends State<FinanceCardStack>
   }
 
   void resetPosition() {
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-
     animation = Tween<double>(begin: dragX, end: 0).animate(
       CurvedAnimation(parent: controller, curve: Curves.easeOut),
     )..addListener(() {
@@ -46,7 +41,7 @@ class _FinanceCardStackState extends State<FinanceCardStack>
         });
       });
 
-    controller.forward();
+    controller.forward(from: 0);
   }
 
   void completeSwipe() {
@@ -62,28 +57,41 @@ class _FinanceCardStackState extends State<FinanceCardStack>
     final screenWidth = MediaQuery.of(context).size.width;
 
     double rotation = dragX / screenWidth * 0.2;
-    double backgroundScale =
-        0.94 + (dragX.abs() / screenWidth).clamp(0, 1) * 0.06;
+    double dragProgress = (dragX.abs() / screenWidth).clamp(0, 1);
+
+    double backScale = 0.94 + dragProgress * 0.06;
+    double backTop = 20 - dragProgress * 20;
 
     return SizedBox(
-      height: 240,
+      height: 260,
       child: Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         children: [
-          Transform.scale(
-            scale: backgroundScale,
-            child: SizedBox(
-              width: screenWidth - 32,
-              child: activeIndex == 0
-                  ? const LendingCard()
-                  : ExpenseCard(totalExpense: widget.totalExpense),
+          // 🔥 BACK CARD (visible underneath)
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+            top: backTop,
+            child: Transform.scale(
+              scale: backScale,
+              child: Opacity(
+                opacity: 0.85,
+                child: SizedBox(
+                  width: screenWidth - 32,
+                  child: activeIndex == 0
+                      ? const LendingCard()
+                      : ExpenseCard(totalExpense: widget.totalExpense),
+                ),
+              ),
             ),
           ),
+
+          // 🔥 FRONT CARD
           GestureDetector(
             onPanUpdate: (details) {
               setState(() {
                 dragX += details.delta.dx;
-                dragY += details.delta.dy * 0.2;
+                dragY += details.delta.dy * 0.15;
               });
             },
             onPanEnd: (details) {
