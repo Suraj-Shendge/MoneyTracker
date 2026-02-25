@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../core/colors.dart';
 import '../../data/database_service.dart';
 import '../../data/models/expense_model.dart';
-import 'widgets/finance_card_carousel.dart';
+
 import 'widgets/finance_card_stack.dart';
 import 'widgets/category_row.dart';
 import 'widgets/add_expense_sheet.dart';
@@ -46,8 +45,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       end = customEnd ?? now;
     }
 
-    final data = await DatabaseService.instance
-        .getExpensesByDateRange(start, end);
+    final data =
+        await DatabaseService.instance.getExpensesByDateRange(start, end);
 
     double sum = 0;
     for (var e in data) {
@@ -89,44 +88,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-  backgroundColor: const Color(0xFFD6FF00),
-  onPressed: () {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const AddExpenseSheet(),
-    );
-  },
-  child: const Icon(Icons.add, color: Colors.black),
-),
       backgroundColor: AppColors.background,
+
+      floatingActionButton: Container(
+        height: 70,
+        width: 70,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0xFFD6FF00),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFD6FF00).withOpacity(0.6),
+              blurRadius: 20,
+              spreadRadius: 2,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(35),
+            onTap: () async {
+              await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const AddExpenseSheet(),
+              );
+
+              loadExpenses();
+            },
+            child: const Center(
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+                size: 32,
+              ),
+            ),
+          ),
+        ),
+      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.only(bottom: 100),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
-
-              // 🔥 New Carousel
-              FinanceCardStack(totalExpense: totalExpense),
-              
-              const SizedBox(height: 24),
-CategoryRow(),
-
               const SizedBox(height: 20),
+
+              // 🔥 Stacked Card System
+              FinanceCardStack(totalExpense: totalExpense),
+
+              const SizedBox(height: 24),
+
+              // 🔥 Category Row
+              const CategoryRow(),
+
+              const SizedBox(height: 24),
 
               buildRangeSelector(),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
 
               buildTransactionHeader(),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
 
               buildExpenseList(),
+
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -170,22 +202,30 @@ CategoryRow(),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.emerald),
         ),
-        child: Text(label),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected
+                ? Colors.white
+                : Colors.white70,
+          ),
+        ),
       ),
     );
   }
 
   Widget buildTransactionHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children: [
           Text(
             "Transactions",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
           Text(
@@ -204,7 +244,10 @@ CategoryRow(),
       return const Padding(
         padding: EdgeInsets.all(40),
         child: Center(
-          child: Text("No transactions yet"),
+          child: Text(
+            "No transactions yet",
+            style: TextStyle(color: Colors.white60),
+          ),
         ),
       );
     }
@@ -234,6 +277,7 @@ CategoryRow(),
                     e.merchant,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -250,6 +294,7 @@ CategoryRow(),
                 "₹ ${e.amount.toStringAsFixed(0)}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ],
