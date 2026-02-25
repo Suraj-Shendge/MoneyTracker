@@ -138,12 +138,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               const SizedBox(height: 20),
 
-              // 🔥 Stacked Card System
               FinanceCardStack(totalExpense: totalExpense),
 
               const SizedBox(height: 24),
 
-              // 🔥 Category Row
               const CategoryRow(),
 
               const SizedBox(height: 24),
@@ -259,61 +257,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
       itemBuilder: (context, index) {
         final e = expenses[index];
 
-return Container(
-  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  padding: const EdgeInsets.all(16),
-  decoration: BoxDecoration(
-    color: AppColors.card,
-    borderRadius: BorderRadius.circular(24),
-  ),
-  child: Row(
-    children: [
-      // Category Icon Circle
-      Container(
-        height: 48,
-        width: 48,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Color(0xFFD6FF00),
-        ),
-        child: const Icon(
-          Icons.receipt,
-          color: Colors.black,
-        ),
-      ),
-
-      const SizedBox(width: 16),
-
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              e.merchant,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+        return Container(
+          margin:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
+            ],
+            border: Border.all(
+              color: Colors.black.withOpacity(0.05),
             ),
-            const SizedBox(height: 4),
-            Text(
-              e.category,
-              style: const TextStyle(
-                color: Colors.white60,
-                fontSize: 12,
+          ),
+          child: Row(
+            children: [
+              Container(
+                height: 48,
+                width: 48,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFD6FF00),
+                ),
+                child: const Icon(
+                  Icons.receipt,
+                  color: Colors.black,
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
 
-      Text(
-        "₹ ${e.amount.toStringAsFixed(0)}",
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ],
-  ),
-);
+              const SizedBox(width: 16),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      e.merchant,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      e.category,
+                      style: const TextStyle(
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Text(
+                "₹ ${e.amount.toStringAsFixed(0)}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
