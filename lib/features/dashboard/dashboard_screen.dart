@@ -4,6 +4,7 @@ import '../../core/colors.dart';
 import '../../data/database_service.dart';
 import '../../data/models/expense_model.dart';
 import 'widgets/finance_card_carousel.dart';
+import 'widgets/finance_card_stack.dart';
 
 enum RangeType { today, month, custom }
 
@@ -96,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(height: 10),
 
               // 🔥 New Carousel
-              FinanceCardCarousel(totalExpense: totalExpense),
+              FinanceCardStack(totalExpense: totalExpense),
 
               const SizedBox(height: 20),
 
