@@ -60,20 +60,24 @@ class _ExpenseCardState extends State<ExpenseCard> {
           // Centered Amount
           Center(
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: Text(
-                hideAmount
-                    ? "INR •••••"
-                    : "INR ${NumberFormat('#,##0.00').format(widget.totalExpense)}",
-                key: ValueKey(hideAmount),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+              TweenAnimationBuilder<double>(
+  tween: Tween<double>(begin: 0, end: widget.totalExpense),
+  duration: const Duration(milliseconds: 400),
+  builder: (context, value, child) {
+    return Center(
+      child: Text(
+        hideAmount
+            ? "INR •••••"
+            : "INR ${value.toStringAsFixed(2)}",
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  },
+),
 
           const SizedBox(height: 20),
 
