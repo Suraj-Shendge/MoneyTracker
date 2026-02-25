@@ -10,16 +10,16 @@ class LendingCard extends StatelessWidget {
       height: 220,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        color: AppColors.card,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          )
-        ],
-      ),
+  borderRadius: BorderRadius.circular(28),
+  color: Colors.white,
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.2),
+      blurRadius: 20,
+      offset: const Offset(0, 10),
+    )
+  ],
+),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,7 +27,7 @@ class LendingCard extends StatelessWidget {
             "Lending & Borrowing",
             style: TextStyle(
               fontSize: 16,
-              color: AppColors.textSecondary,
+              color: Colors.black54,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -40,7 +40,7 @@ class LendingCard extends StatelessWidget {
             children: [
               const Text(
                 "You Will Receive",
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: Colors.black54),
               ),
               const Text(
                 "₹ 0",
@@ -61,7 +61,7 @@ class LendingCard extends StatelessWidget {
             children: [
               const Text(
                 "You Need To Pay",
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: Colors.black54),
               ),
               const Text(
                 "₹ 0",
