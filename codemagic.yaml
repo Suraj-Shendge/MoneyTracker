@@ -1,4 +1,17 @@
 workflows:
+  generate-project:
+    name: Generate Full Flutter Project
+    max_build_duration: 20
+
+    environment:
+      flutter: stable
+
+    scripts:
+      - flutter create expensinfo_full
+
+    artifacts:
+      - expensinfo_full/**
+
   android-release:
     name: Android Release Build
     max_build_duration: 60
@@ -7,13 +20,6 @@ workflows:
       flutter: stable
 
     scripts:
-      - flutter create .
-      - |
-          sed -i '/<manifest/a\
-          <uses-permission android:name="android.permission.READ_SMS"/>\
-          <uses-permission android:name="android.permission.RECEIVE_SMS"/>\
-          <uses-permission android:name="android.permission.READ_PHONE_STATE"/>' \
-          android/app/src/main/AndroidManifest.xml
       - flutter pub get
       - flutter build apk --release
 
