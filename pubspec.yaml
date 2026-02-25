@@ -1,5 +1,5 @@
 name: expensinfo
-description: Premium Fintech Expense & Ledger App
+description: Premium Expense Tracker 2026
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -12,7 +12,7 @@ dependencies:
   sqflite: ^2.3.0
   path: ^1.8.3
   intl: ^0.18.1
-  local_auth: ^2.1.6
+  provider: ^6.1.1
 
 flutter:
   uses-material-design: true
