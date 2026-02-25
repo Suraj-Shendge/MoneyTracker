@@ -6,6 +6,7 @@ import '../../data/models/expense_model.dart';
 import 'widgets/finance_card_carousel.dart';
 import 'widgets/finance_card_stack.dart';
 import 'widgets/category_row.dart';
+import 'widgets/add_expense_sheet.dart';
 
 enum RangeType { today, month, custom }
 
@@ -88,6 +89,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+  backgroundColor: const Color(0xFFD6FF00),
+  onPressed: () {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const AddExpenseSheet(),
+    );
+  },
+  child: const Icon(Icons.add, color: Colors.black),
+),
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
