@@ -1,5 +1,5 @@
-name: money_ledger_premium_2026
-description: Premium Android-only Money Ledger
+name: expensinfo
+description: Premium Fintech Expense & Ledger App
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,6 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  intl: ^0.18.1
+  local_auth: ^2.1.6
 
 flutter:
   uses-material-design: true
